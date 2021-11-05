@@ -4,7 +4,7 @@ class creature:
     def __init__(self, uid, name, sex, parents:list=None):
         self.uid = uid
         self.name = name
-        self.sex = sex
+        self.isFemale = sex
         self.parents = parents
         self.relations = dict()
         """
@@ -14,11 +14,16 @@ class creature:
             "isActive":bool()
         }
         """
+        self.currentRelation = None
         self.children = dict() #Dictionary of all children
 
         self.isInRelation = False
         self.canReproduce = True
         self.isAlive = True
+
+    def determinSpecies(self):
+        
+        pass
 
     def checkIfInRelation(self):
         if isEmpty(self.relations):
@@ -29,6 +34,9 @@ class creature:
                 relation["isActive"] = False #Sets as false if the partner is dead, fail safe should been missed elsewhere
 
             if relation["isActive"] == True:
+                self.currentRelation = relation
+                relation["partner"].currentRelation = relation
+
                 return True
 
         return False
