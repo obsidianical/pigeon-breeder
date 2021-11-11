@@ -8,15 +8,11 @@ class daycare:
 
         self.creatures = dict()
         self.historicCreatures = dict()
-        self.breedingGroups = dict()
 
         self.breedingDifficulty = 25
 
     def getCreatureUID(self):
         return len(self.historicCreatures)
-
-    def getGroupUID(self):
-        return len(self.breedingGroups)
 
     def createCreature(self, uid, name, sex, parents:list=None):
         newCreature = creature(uid, name, sex, parents)
@@ -29,11 +25,6 @@ class daycare:
         randomCreature = self.createCreature(self.getCreatureUID(), "Randy", getrandbits(1))
 
         return randomCreature
-
-    def updateGroups(self):
-        for group in self.breedingGroups:
-            for pigeon in group["all"]:
-                pass
 
     def reproduce(self, parents:list):
         uid = self.getCreatureUID()
@@ -50,7 +41,7 @@ class daycare:
             if value == 0:
                 mod += 1
                 break
-                
+
             mod += 1 / value
 
         if randint(0, 100) < self.breedingDifficulty * mod:
