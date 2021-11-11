@@ -43,16 +43,15 @@ class daycare:
             parent.timesBreed += 1
 
     def breed(self, male, female):
-        try:
-            mod = (1 / female.timesBreed) + (1 / male.timesBreed)
+        tB = [female.timesBreed, male.timesBreed]
+        mod = 0
 
-        except ZeroDivisionError: # Cuz fucking zero doesn't want to play nice
-            if female.timesBreed == 0 and male.timesBreed == 0:
-                mod = 2
-            elif female.timesBreed == 0:
-                mod = 1 + (1 / male.timesBreed)
-            elif male.timesBreed == 0:
-                mod = (1 / female.timesBreed) + 1
+        for value in tB:
+            if value == 0:
+                mod += 1
+                break
+                
+            mod += 1 / value
 
         if randint(0, 100) < self.breedingDifficulty * mod:
             self.reproduce([male, female])
