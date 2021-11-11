@@ -26,12 +26,14 @@ class daycare:
 
         return randomCreature
 
-    def reproduce(self, parents:list):
-        uid = self.getCreatureUID()
-        child = self.createCreature(uid, "Pigeon" + str(uid), getrandbits(1), parents)
-        for parent in parents: #Supports more than two parents!
-            parent.addChild(child)
-            parent.timesBreed += 1
+    def reproduce(self, parents:list, numberOfChildren:int):
+        for i in range(numberOfChildren):
+            uid = self.getCreatureUID()
+            child = self.createCreature(uid, "Pigeon" + str(uid), getrandbits(1), parents)
+            
+            for parent in parents: #Supports more than two parents!
+                parent.addChild(child)
+                parent.timesBreed += 1
 
     def breed(self, male, female):
         tB = [female.timesBreed, male.timesBreed]
@@ -45,7 +47,7 @@ class daycare:
             mod += 1 / value
 
         if randint(0, 100) < self.breedingDifficulty * mod:
-            self.reproduce([male, female])
+            self.reproduce([male, female], 2)
 
     def death(self, target):
         pass
