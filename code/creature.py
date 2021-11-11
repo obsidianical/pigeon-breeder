@@ -8,6 +8,7 @@ class creature:
         self.isFemale = sex
         self.canReproduce = True
         self.isAlive = True
+        self.timesBreed = 0
 
         self.parents = parents
         self.children = dict() #Dictionary of all children
