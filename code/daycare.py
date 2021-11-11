@@ -6,6 +6,9 @@ class daycare:
     def __init__(self, name):
         self.name = name
 
+        self.month = 1
+        self.year = 0
+
         self.creatures = dict()
         self.historicCreatures = dict()
 
@@ -54,4 +57,10 @@ class daycare:
         target.isAlive = False
 
     def update(self):
-        pass
+        self.month += 1
+
+        for pigeon in self.creatures:
+            pigeon = self.creatures[str(pigeon)]
+            pigeon.age += 1
+
+        print("Month: " + str(self.month))
