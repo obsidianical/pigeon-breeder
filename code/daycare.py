@@ -30,7 +30,7 @@ class daycare:
         for i in range(numberOfChildren):
             uid = self.getCreatureUID()
             child = self.createCreature(uid, "Pigeon" + str(uid), getrandbits(1), parents)
-            
+
             for parent in parents: #Supports more than two parents!
                 parent.addChild(child)
                 parent.timesBreed += 1
@@ -50,7 +50,8 @@ class daycare:
             self.reproduce([male, female], 2)
 
     def death(self, target):
-        pass
+        del self.creatures[str(target.uid)]
+        target.isAlive = False
 
     def update(self):
         pass
