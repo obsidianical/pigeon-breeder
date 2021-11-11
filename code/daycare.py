@@ -10,6 +10,8 @@ class daycare:
         self.historicCreatures = dict()
         self.breedingGroups = dict()
 
+        self.breedingDifficulty = 25
+
     def getCreatureUID(self):
         return len(self.historicCreatures)
 
@@ -43,7 +45,7 @@ class daycare:
     def breed(self, male, female):
         try:
             mod = (1 / female.timesBreed) + (1 / male.timesBreed)
-            
+
         except ZeroDivisionError: # Cuz fucking zero doesn't want to play nice
             if female.timesBreed == 0 and male.timesBreed == 0:
                 mod = 2
@@ -52,7 +54,7 @@ class daycare:
             elif male.timesBreed == 0:
                 mod = (1 / female.timesBreed) + 1
 
-        if randint(0, 100) < 25 * mod:
+        if randint(0, 100) < self.breedingDifficulty * mod:
             self.reproduce([male, female])
 
     def death(self, target):
