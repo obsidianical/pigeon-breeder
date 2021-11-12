@@ -17,3 +17,12 @@ class creature:
     def addChild(self, child):
         #Adds child where needed
         self.children[str(child.uid)] = child
+
+    def show(self):
+        parents = ""
+        if self.parents != None:
+            for parent in self.parents:
+                parents += "Parent: " + str(parent.uid) + "\n"
+
+        stringyBoi = "UID: " + str(self.uid) + "\nName: " + str(self.name) + "\nAge: " + str(self.age) + "\nFemale: " + str(self.isFemale) + "\nAlive: " + str(self.isAlive) + "\n" + parents
+        return stringyBoi
