@@ -7,7 +7,8 @@ class daycare:
         self.name = name
 
         self.month = 1
-        self.year = 0
+
+        self.wealth = 5
 
         self.creatures = dict()
         self.historicCreatures = dict()
@@ -25,14 +26,46 @@ class daycare:
         return newCreature
 
     def generateRandomCreature(self):
-        randomCreature = self.createCreature(self.getCreatureUID(), "Randy", getrandbits(1))
+        randomCreature = self.createCreature(self.getCreatureUID(), "Randy", bool(getrandbits(1)))
 
         return randomCreature
+
+    def buyPigeon(self):
+        while True:
+            data = {
+                "age":randint(6, 72),
+                "female":bool(getrandbits(1)),
+                "cost":randint(5, 15)
+            }
+            print("Age: %s Months\nFemale: %s\nCost: %s\n"%(data["age"], data["female"], data["cost"]))
+
+            i = input("Do you want to buy the pigeon?(y/n/a)\n")
+            i = i.lower()
+
+            if i == "n":
+                continue
+            elif i == "y":
+                if self.wealth < data["cost"]:
+                    print("You have not enought money to buy this pigeon!")
+                    j = input("Do you want to look for another pigeon(y/n)\n")
+                    if j == "n":
+                        break
+                    continue
+                uid = self.getCreatureUID()
+                pigeon = self.createCreature(uid, "Pigeon " + str(uid), data["female"])
+                pigeon.age = data["age"]
+                break
+            elif i == "a":
+                break
+
+    def sellPigeon(self, pigeon):
+        #Code to sell pigeons goes here
+        pass
 
     def reproduce(self, parents:list, numberOfChildren:int):
         for i in range(numberOfChildren):
             uid = self.getCreatureUID()
-            child = self.createCreature(uid, "Pigeon" + str(uid), getrandbits(1), parents)
+            child = self.createCreature(uid, "Pigeon " + str(uid), bool(getrandbits(1)), parents)
 
             for parent in parents: #Supports more than two parents!
                 parent.addChild(child)
@@ -72,6 +105,10 @@ class daycare:
         "Month: " + str(self.month))
 
         return infoString
+
+    def showList(self):
+        for key in self.creatures.keys():
+            print(key)
 
     def do(self, command):
         command = command.lower()
@@ -136,6 +173,7 @@ class daycare:
             print(self.info())
 
         elif command == "buy":
+
             pass
 
         elif command == "end month":
