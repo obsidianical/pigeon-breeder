@@ -54,7 +54,7 @@ class daycare:
 
             return 0
 
-        return 0
+        return 1
 
     def death(self, target):
         del self.creatures[str(target.uid)]
