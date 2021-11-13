@@ -1,3 +1,6 @@
+import sys
+import os
+
 """
 Shared Functions
 """
@@ -8,4 +11,10 @@ def isEmpty(List):
     return not isNotEmpty(List)
 
 def inputString():
-    return "What do you do? "
+    return "\nWhat do you do? "
+
+def whatOS():
+    return sys.platform
+
+def clearCMD():
+    os.system('"clear"')

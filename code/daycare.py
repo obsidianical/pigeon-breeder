@@ -8,7 +8,7 @@ class daycare:
 
         self.month = 1
 
-        self.wealth = 5
+        self.wealth = 50
 
         self.creatures = dict()
         self.historicCreatures = dict()
@@ -39,23 +39,30 @@ class daycare:
             }
             print("Age: %s Months\nFemale: %s\nCost: %s\n"%(data["age"], data["female"], data["cost"]))
 
-            i = input("Do you want to buy the pigeon?(y/n/a)\n")
+            i = input("Do you want to buy the pigeon?(Yes(y)/No(n)/Abort(a)) ")
             i = i.lower()
+
+            print("\n")
 
             if i == "n":
                 continue
+
             elif i == "y":
                 if self.wealth < data["cost"]:
                     print("You have not enought money to buy this pigeon!")
-                    j = input("Do you want to look for another pigeon(y/n)\n")
+                    j = input("Do you want to look for another pigeon(Yes(y)/No(n)) ")
                     if j == "n":
                         break
+
                     continue
+
                 uid = self.getCreatureUID()
                 pigeon = self.createCreature(uid, "Pigeon " + str(uid), data["female"])
                 pigeon.age = data["age"]
+
                 break
-            elif i == "a":
+
+            else:
                 break
 
     def sellPigeon(self, pigeon):
@@ -103,12 +110,18 @@ class daycare:
     def info(self):
         infoString = ("Daycare Name: " + self.name + "\n" +
         "Month: " + str(self.month))
-
+        infoString += "\nPigeons:"
+        if isNotEmpty(self.creatures):
+            infoString += "\n"
+            for pigeonKey in self.creatures.keys():
+                pigeon = self.creatures[pigeonKey]
+                infoString += str(pigeon.uid) + " - " + pigeon.name + "\n"
+        else:
+            infoString += "\nNone"
         return infoString
 
-    def showList(self):
-        for key in self.creatures.keys():
-            print(key)
+    def renamePigeon(self, pigeonUID, name):
+        self.creatures[str(pigeonUID)].name = name
 
     def do(self, command):
         command = command.lower()
@@ -173,14 +186,23 @@ class daycare:
             print(self.info())
 
         elif command == "buy":
+            self.buyPigeon()
 
-            pass
+        elif command == "rename":
+            pigeonUID = str(input("Which pigeon do you want to rename? "))
+            newName = input("How should the pigeon be called? ")
+
+            try:
+                self.renamePigeon(pigeonUID, newName)
+            except KeyError:
+                print("Pigeon not found or dead, try another pigeon")
 
         elif command == "end month":
             self.update()
             print(self.info())
 
-        elif command == "help":
+        elif command == "help" or command == "h":
+            #Update Help Menu
             print("HELP MENU")
             print("LIST OF COMMANDS:")
             print("help - Calls this menu")
@@ -188,6 +210,9 @@ class daycare:
             print("breed - Allows you to breed two pigeons")
             print("kill - kills the pigeon")
             print("quit - Ends the game")
+
+        elif command == "clear":
+            clearCMD()
 
         else:
             print("Command Not Found")
