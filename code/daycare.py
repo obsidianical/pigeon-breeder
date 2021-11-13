@@ -65,9 +65,17 @@ class daycare:
             else:
                 break
 
-    def sellPigeon(self, pigeon):
+    def sellPigeon(self, pigeonUID):
         #Code to sell pigeons goes here
-        pass
+        price = randint(5, 20)
+        answer = input("You can sell the pigeon for " + str(price) + ", do you accept? ((Yes(y)/No(n))")
+        answer = answer.lower()
+
+        if answer == "y":
+            self.death(self.creatures[pigeonUID])
+            print("Pigeon sold!")
+        else:
+            print("Okay, than not")
 
     def reproduce(self, parents:list, numberOfChildren:int):
         for i in range(numberOfChildren):
@@ -77,6 +85,7 @@ class daycare:
             for parent in parents: #Supports more than two parents!
                 parent.addChild(child)
                 parent.timesBreed += 1
+                parent.acted = False
 
     def breed(self, male, female):
         tB = [female.timesBreed, male.timesBreed]
@@ -106,6 +115,7 @@ class daycare:
         for pigeon in self.creatures:
             pigeon = self.creatures[str(pigeon)]
             pigeon.age += 1
+            pigeon.acted = False
 
     def info(self):
         infoString = ("Daycare Name: " + self.name + "\n" +
@@ -122,6 +132,15 @@ class daycare:
 
     def renamePigeon(self, pigeonUID, name):
         self.creatures[str(pigeonUID)].name = name
+
+    def isValidPigeon(self, pigeonUID):
+        # Check if the given uid is a valid pigeon
+        try:
+            self.creatures[str(pigeonUID)]
+            return True
+
+        except KeyError:
+            return False
 
     def do(self, command):
         command = command.lower()
@@ -146,7 +165,7 @@ class daycare:
                     continue
 
             while True:
-                pigeonB = input("Pick a male:")
+                pigeonB = input("Pick a female:")
                 confirm = input("You sure you want to select " + str(pigeonB) +"?")
                 if confirm == "n":
                     continue
@@ -188,13 +207,20 @@ class daycare:
         elif command == "buy":
             self.buyPigeon()
 
+        elif command == "sell":
+            pigeonUID = input("Which pigeon do you want to sell? ")
+            if self.isValidPigeon(pigeonUID):
+                self.sellPigeon(pigeonUID)
+            else:
+                print("Pick another pigeon")
+
         elif command == "rename":
             pigeonUID = str(input("Which pigeon do you want to rename? "))
             newName = input("How should the pigeon be called? ")
 
-            try:
+            if self.isValidPigeon(pigeonUID):
                 self.renamePigeon(pigeonUID, newName)
-            except KeyError:
+            else:
                 print("Pigeon not found or dead, try another pigeon")
 
         elif command == "end month":

@@ -11,6 +11,8 @@ class creature:
         self.isAlive = True
         self.timesBreed = 0
 
+        self.acted = True
+
         self.parents = parents
         self.children = dict() #Dictionary of all children
 
