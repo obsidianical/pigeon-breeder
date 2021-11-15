@@ -1,2 +1,17 @@
 ## ToDo
--[ ] Add a system that prevents from a pigeon to breed multiple times a month
+-[ ] The Rewrite
+  -[ ] Rewrite code
+    -[ ] Rewrite pigeon class
+    -[ ] Rewrite daycare code
+      -[ ] Rewrite do function
+      -[ ] Rewrite other functions
+      -[ ] Add function to rename daycare
+      -[ ] Add function to pick random name
+    -[ ] Add comments
+-[ ] The Genetic System
+  -[ ] Add a system that prevents from a pigeon to breed multiple times a month
+  -[ ] Add genetic system for pigeons
+    -[ ] Add genetic diseases
+-[ ] The Buisness System
+  -[ ] Dynamicly calculate pigeon value
+  -[ ] Add championships for different pigeon traits that allow you to earn money
