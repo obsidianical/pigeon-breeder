@@ -13,7 +13,7 @@ class daycare:
         self.creatures = dict()
         self.historicCreatures = dict()
 
-        self.breedingDifficulty = 25
+        self.breedingDifficulty = 25 #the n out of 100 chance to successfully reproduce
 
     def getCreatureUID(self):
         return len(self.historicCreatures)
@@ -160,6 +160,9 @@ class daycare:
 
                 if pigeonA.isFemale == False:
                     break
+                elif pigeonA.acted == True:
+                    print("Your targeted pigeon already breed this month")
+                    continue
                 else:
                     print("You targeted a female pigeon, please pick a male pigeon")
                     continue
@@ -178,6 +181,9 @@ class daycare:
 
                 if pigeonB.isFemale == True:
                     break
+                elif pigeonB.acted == True:
+                    print("Your targeted pigeon already breed this month")
+                    continue
                 else:
                     print("You targeted a male pigeon, please pick a female pigeon")
                     continue
