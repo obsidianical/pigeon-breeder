@@ -94,6 +94,8 @@ class daycare:
             child.fluffiness = childGenetics["fluff"]
             child.speed = childGenetics["speed"]
             child.size = childGenetics["size"]
+            if self.deathConditions(child):
+                self.death(child)
 
             for parent in parents: #Supports more than two parents!
                 parent.addChild(child)
@@ -103,6 +105,7 @@ class daycare:
         timesBreed = [female.timesBreed, male.timesBreed]
         pigeons = [male, female]
         mod = 0
+        alwaysSucceed = True
 
         for value in timesBreed:
             if value == 0:
@@ -112,9 +115,8 @@ class daycare:
             mod += 1 / value
         for pigeon in pigeons:
             pigeon.didAct = True
-            pass
 
-        if randint(0, 100) < self.breedingDifficulty * mod:
+        if randint(0, 100) < self.breedingDifficulty * mod or alwaysSucceed == True:
             self.reproduce(pigeons, 2)
 
             return 0
@@ -127,11 +129,15 @@ class daycare:
 
     def update(self):
         self.month += 1
+        livingPigeons = self.pigeons
 
-        for pigeon in self.pigeons:
-            pigeon = self.pigeons[str(pigeon)]
+
+        for pigeon in livingPigeons:
+            pigeon = livingPigeons[str(pigeon)]
             pigeon.age += 1
             pigeon.didAct = False
+            if self.deathConditions(pigeon) and randint(0, 100) < 20:
+                self.death(pigeon)
 
     def info(self):
         infoString = ("Daycare Name: " + self.name + "\n" +
@@ -184,11 +190,16 @@ class daycare:
             speed += currentPigeon.speed
             size += currentPigeon.size
 
-        fluffiness = int(fluffiness / len(pigeons))
-        speed = int(speed / len(pigeons))
-        size = int(size / len(pigeons))
+        fluffiness = int(fluffiness / len(pigeons)) + randint(-3, 3)
+        speed = int(speed / len(pigeons)) + randint(-3, 3)
+        size = int(size / len(pigeons)) + randint(-3, 3)
 
         return {"fluff":fluffiness, "speed":speed, "size":size}
+
+    def deathConditions(self, pigeon):
+        if 72 < pigeon.age or pigeon.speed < 1 or pigeon.size < 1 or pigeon.fluffiness < 1:
+            return True
+        return False
 
     def do(self, command):
         command = command.lower()
