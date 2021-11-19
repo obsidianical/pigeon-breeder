@@ -26,8 +26,8 @@ class daycare:
     def getRandomName(self, sex:str):
         return choice(self.randomNames[sex.lower()]) # Returns random name
 
-    def createPigeon(self, uid, name, sex, parents:list=None):
-        newPigeon = pigeonClass(uid, name, sex, parents)
+    def createPigeon(self, pigeonUID, name, isFemale, parents:list=None):
+        newPigeon = pigeonClass(pigeonUID, name, isFemale, parents)
         self.allPigeons[str(newPigeon.uid)] = newPigeon
         self.pigeons[str(newPigeon.uid)] = newPigeon
 
@@ -61,17 +61,18 @@ class daycare:
                 Speed: {data["speed"]}"""))
 
 
-            i = input("Do you want to buy the pigeon?(Yes(y)/No(n)/Abort(a)) ")
-            i = i.lower()
+            confirmation = input("Do you want to buy the pigeon?(Yes(y)/No(n)/Abort(a)) ")
+            confirmation = confirmation.lower()
 
-            if i == "n":
+            if confirmation == "n":
                 continue
 
-            elif i == "y":
+            elif confirmation == "y":
                 if self.wealth < data["cost"]:
                     print("You have not enought money to buy this pigeon!")
-                    j = input("Do you want to look for another pigeon(Yes(y)/No(n)) ")
-                    if j == "n":
+					#Reuses confirmation variable
+                    confirmation = input("Do you want to look for another pigeon(Yes(y)/No(n)) ")
+                    if confirmation == "n":
                         break
 
                     continue
@@ -91,10 +92,10 @@ class daycare:
     def sellPigeon(self, pigeonUID):
         #Code to sell pigeons goes here
         price = randint(5, 20)
-        answer = input("You can sell the pigeon for " + str(price) + ", do you accept? ((Yes(y)/No(n))")
-        answer = answer.lower()
+        confirmation = input("You can sell the pigeon for " + str(price) + ", do you accept? ((Yes(y)/No(n))")
+        confirmation = confirmation.lower()
 
-        if answer == "y":
+        if confirmation == "y":
             self.death(self.pigeons[pigeonUID])
             print("Pigeon sold!")
         else:
@@ -102,8 +103,8 @@ class daycare:
 
     def reproduce(self, parents:list, numberOfChildren:int):
         for i in range(numberOfChildren):
-            uid = self.getPigeonUID()
-            child = self.createPigeon(uid, "Pigeon " + str(uid), bool(getrandbits(1)), parents)
+            pigeonUID = self.getPigeonUID()
+            child = self.createPigeon(uid, "Pigeon " + str(pigeonUID), bool(getrandbits(1)), parents)
             childGenetics = self.genetics(parents)
             child.fluffiness = childGenetics["fluff"]
             child.speed = childGenetics["speed"]
@@ -118,36 +119,36 @@ class daycare:
     def breed(self, male, female):
         timesBreed = [female.timesBreed, male.timesBreed]
         pigeons = [male, female]
-        mod = 0
-        alwaysSucceed = True
+        modifier = 0
+        alwaysSucceed = False # Left in for potential future uses
 
         for value in timesBreed:
             if value == 0:
-                mod += 1
+                modifier += 1
                 break
 
-            mod += 1 / value
+            modifier += 1 / value
         for pigeon in pigeons:
             pigeon.didAct = True
 
-        if randint(0, 100) < self.breedingDifficulty * mod or alwaysSucceed == True:
+        if randint(0, 100) < self.breedingDifficulty * modifier or alwaysSucceed == True:
             self.reproduce(pigeons, 2)
 
             return 0
 
         return 1
 
-    def death(self, target):
-        del self.pigeons[str(target.uid)]
-        target.isAlive = False
+    def death(self, pigeon):
+        del self.pigeons[str(pigeon.uid)]
+        pigeon.isAlive = False
 
     def update(self):
         self.month += 1
         livingPigeons = self.pigeons
 
 
-        for pigeon in livingPigeons:
-            pigeon = livingPigeons[str(pigeon)]
+        for pigeonKey in livingPigeons:
+            pigeon = livingPigeons[pigeonKey]
             pigeon.age += 1
             pigeon.didAct = False
             if self.deathConditions(pigeon) and randint(0, 100) < 20:
@@ -182,34 +183,34 @@ class daycare:
 
     def didActList(self):
         # Returns a list of pigeons that didn't act
-        listOfPigeons = list()
+        lopta = list() #lopta -> listOfPigeonsThatActed
         for pigeonKey in self.pigeons:
-            selectedPigeon = self.pigeons[pigeonKey]
-            if selectedPigeon.didAct == True:
-                listOfPigeons.append(selectedPigeon)
-        return listOfPigeons
+            pigeon = self.pigeons[pigeonKey]
+            if pigeon.didAct == True:
+                lopta.append(pigeon)
+        return lopta
 
     def didNotActList(self):
         # Returns a list of pigeons that did act
-        listOfPigeons = list()
+        lopthna = list() # lopthna -> listOfPigeonsThatHaveNotActed
         for pigeonKey in self.pigeons:
-            selectedPigeon = self.pigeons[pigeonKey]
-            if selectedPigeon.didAct == False:
-                listOfPigeons.append(selectedPigeon)
-        return listOfPigeons
+            pigeon = self.pigeons[pigeonKey]
+            if pigeon.didAct == False:
+                lopthna.append(pigeon)
+        return lopthna
 
-    def genetics(self, pigeons):
+    def genetics(self, parents):
         fluffiness = 0
         speed = 0
         size = 0
-        for currentPigeon in pigeons:
-            fluffiness += currentPigeon.fluffiness
-            speed += currentPigeon.speed
-            size += currentPigeon.size
+        for pigeon in parents:
+            fluffiness += pigeon.fluffiness
+            speed += pigeon.speed
+            size += pigeon.size
 
-        fluffiness = int(fluffiness / len(pigeons)) + randint(-3, 3)
-        speed = int(speed / len(pigeons)) + randint(-3, 3)
-        size = int(size / len(pigeons)) + randint(-3, 3)
+        fluffiness = int(fluffiness / len(parents)) + randint(-3, 3)
+        speed = int(speed / len(parents)) + randint(-3, 3)
+        size = int(size / len(parents)) + randint(-3, 3)
 
         return {"fluff":fluffiness, "speed":speed, "size":size}
 
@@ -218,9 +219,9 @@ class daycare:
             return True
         return False
 
-    def breedCommand(self, pigeonAUID:int, pigeonBUID:int):
+    def breedCommand(self, pigeonUID1:int, pigeonUID2:int):
         try:
-            pigeons = [self.pigeons[pigeonAUID], self.pigeons[pigeonBUID]]
+            pigeons = [self.pigeons[pigeonUID1], self.pigeons[pigeonUID2]]
         except KeyError:
             print("You picked one or more pigeons that don't exist!")
             return 0

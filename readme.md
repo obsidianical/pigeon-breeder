@@ -23,3 +23,4 @@ Python Version: 3.10
 
 - [ ] Other ToDos
   - [ ] Add family tree printout
+	- [ ] Make naming convention of variables unified

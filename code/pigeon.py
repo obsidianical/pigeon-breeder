@@ -2,8 +2,8 @@ from common import *
 import textwrap as tw
 
 class pigeonClass:
-    def __init__(self, uid, name, sex, parents:list=None):
-        self.uid = uid
+    def __init__(self, pigeonUID, name, sex, parents:list=None):
+        self.uid = pigeonUID
         self.name = name
         self.age = 0 # Age in months
 
