@@ -295,10 +295,10 @@ class daycare:
             "LIST OF COMMANDS: \n\t" +
             "help - Calls this menu \n\t" +
             "info - Shows all info about your pigeon care \n\t" +
-            "show - Shows you a pigeon of your choice \n\t" +
-            "breed - Allows you to breed two pigeons \n\t" +
+            "show - show [uid] | Shows you a pigeon of your choice \n\t" +
+            "breed - breed [uid] [uid] | Allows you to breed two pigeons \n\t" +
             "buy - gives you a random pigeon to buy \n\t" +
-            "sell - allows you to sell a pigeon \n\t" +
+            "sell - [uid] | allows you to sell a pigeon \n\t" +
             "rename - rename [uid] [newName] | allows you to rename a pigeon \n\t" +
             "pass - ends month \n\t" +
             "quit - Ends the game")
