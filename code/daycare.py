@@ -1,4 +1,4 @@
-from creature import *
+from pigeon import *
 from common import *
 from random import getrandbits, randint
 
@@ -10,18 +10,18 @@ class daycare:
 
         self.wealth = 50
 
-        self.creatures = dict()
-        self.historicCreatures = dict()
+        self.pigeons = dict()
+        self.allPigeons = dict()
 
         self.breedingDifficulty = 25 #the n out of 100 chance to successfully reproduce
 
     def getCreatureUID(self):
-        return len(self.historicCreatures)
+        return len(self.allPigeons)
 
     def createCreature(self, uid, name, sex, parents:list=None):
         newCreature = creature(uid, name, sex, parents)
-        self.historicCreatures[str(newCreature.uid)] = newCreature
-        self.creatures[str(newCreature.uid)] = newCreature
+        self.allPigeons[str(newCreature.uid)] = newCreature
+        self.pigeons[str(newCreature.uid)] = newCreature
 
         return newCreature
 
@@ -72,7 +72,7 @@ class daycare:
         answer = answer.lower()
 
         if answer == "y":
-            self.death(self.creatures[pigeonUID])
+            self.death(self.pigeons[pigeonUID])
             print("Pigeon sold!")
         else:
             print("Okay, than not")
@@ -106,14 +106,14 @@ class daycare:
         return 1
 
     def death(self, target):
-        del self.creatures[str(target.uid)]
+        del self.pigeons[str(target.uid)]
         target.isAlive = False
 
     def update(self):
         self.month += 1
 
-        for pigeon in self.creatures:
-            pigeon = self.creatures[str(pigeon)]
+        for pigeon in self.pigeons:
+            pigeon = self.pigeons[str(pigeon)]
             pigeon.age += 1
             pigeon.acted = False
 
@@ -121,26 +121,34 @@ class daycare:
         infoString = ("Daycare Name: " + self.name + "\n" +
         "Month: " + str(self.month))
         infoString += "\nPigeons:"
-        if isNotEmpty(self.creatures):
+        if isNotEmpty(self.pigeons):
             infoString += "\n"
-            for pigeonKey in self.creatures.keys():
-                pigeon = self.creatures[pigeonKey]
+            for pigeonKey in self.pigeons.keys():
+                pigeon = self.pigeons[pigeonKey]
                 infoString += str(pigeon.uid) + " - " + pigeon.name + "\n"
         else:
             infoString += "\nNone"
         return infoString
 
     def renamePigeon(self, pigeonUID, name):
-        self.creatures[str(pigeonUID)].name = name
+        self.pigeons[str(pigeonUID)].name = name
 
     def isValidPigeon(self, pigeonUID):
         # Check if the given uid is a valid pigeon
         try:
-            self.creatures[str(pigeonUID)]
+            self.pigeons[str(pigeonUID)]
             return True
 
         except KeyError:
             return False
+
+    def didNotActList(self):
+        # Returns a list of pigeons that didn't act
+        listOfPigeons = list()
+        for pigeon in self.pigeons:
+            if pigeon.acted == False:
+                listOfPigeons.append(pigeon)
+        return listOfPigeons
 
     def do(self, command):
         command = command.lower()
@@ -153,7 +161,7 @@ class daycare:
                     continue
 
                 try:
-                    pigeonA = self.creatures[str(pigeonA)]
+                    pigeonA = self.pigeons[str(pigeonA)]
                 except KeyError:
                     print("Pigeon not found")
                     continue
@@ -174,7 +182,7 @@ class daycare:
                     continue
 
                 try:
-                    pigeonB = self.creatures[str(pigeonB)]
+                    pigeonB = self.pigeons[str(pigeonB)]
                 except KeyError:
                     print("Pigeon not found")
                     continue
@@ -200,7 +208,7 @@ class daycare:
         elif command == "show":
             pigeonID = input("What pigeon do you want to  see? ")
             try:
-                print(self.historicCreatures[str(pigeonID)].show())
+                print(self.allPigeons[str(pigeonID)].show())
             except KeyError:
                 print("Pigeon not found")
 
