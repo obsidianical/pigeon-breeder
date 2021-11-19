@@ -145,7 +145,8 @@ class daycare:
     def didNotActList(self):
         # Returns a list of pigeons that didn't act
         listOfPigeons = list()
-        for selectedPigeon in self.pigeons:
+        for pigeonKey in self.pigeons:
+            selectedPigeon = self.pigeons[pigeonKey]
             if selectedPigeon.didAct == False:
                 listOfPigeons.append(selectedPigeon)
         return listOfPigeons
@@ -154,6 +155,11 @@ class daycare:
         command = command.lower()
 
         if command == "breed":
+            if isEmpty(self.didNotActList()):
+                print("There are no pigeons left that can breed this month, either end this month or do something else.")
+                return 1
+                pass
+
             while True:
                 pigeonA = input("Pick a male:")
                 confirm = input("You sure you want to select " + str(pigeonA) +"? (y/n)")
@@ -243,13 +249,7 @@ class daycare:
 
         elif command == "help" or command == "h":
             #Update Help Menu
-            print("HELP MENU")
-            print("LIST OF COMMANDS:")
-            print("help - Calls this menu")
-            print("show - Shows you a pigeon of your choice")
-            print("breed - Allows you to breed two pigeons")
-            print("kill - kills the pigeon")
-            print("quit - Ends the game")
+            print("HELP MENU \nLIST OF COMMANDS: \n\thelp - Calls this menu \n\tshow - Shows you a pigeon of your choice \n\tbreed - Allows you to breed two pigeons \n\tkill - kills the pigeon \n\tquit - Ends the game")
 
         elif command == "clear":
             clearCMD()

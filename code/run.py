@@ -7,7 +7,6 @@ def main():
 
     while True:
         if care.do(input(inputString())) == 0:
-            print("Pigeon Breeder Ended")
             break
 
 main()
