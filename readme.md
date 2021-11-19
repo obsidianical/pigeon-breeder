@@ -12,7 +12,12 @@
   - [x] Add a system that prevents from a pigeon to breed multiple times a month
   - [ ] Add genetic system for pigeons
     - [ ] Add genetic diseases
+    - [ ] Add genetic traits
+    - [x] Add genetic values
   - [x] Add natrual pigeon death
 - [ ] The Buisness System (v0.3)
   - [ ] Dynamicly calculate pigeon value
   - [ ] Add championships for different pigeon traits that allow you to earn money
+
+- [ ] Other ToDos
+  - [ ] Add family tree printout
