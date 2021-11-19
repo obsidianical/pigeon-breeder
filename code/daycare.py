@@ -216,7 +216,7 @@ class daycare:
             return True
         return False
 
-    def breedCommand(self, pigeonAUID, pigeonBUID):
+    def breedCommand(self, pigeonAUID:int, pigeonBUID:int):
         try:
             pigeons = [self.pigeons[pigeonAUID], self.pigeons[pigeonBUID]]
         except KeyError:
@@ -235,11 +235,13 @@ class daycare:
             else:
                 return 0
 
-        #result =
         if self.breed(male, female) == 0:
             print("Success!")
         else:
             print("Failure")
+
+    def renamePigeonCare(self, newName:str):
+        self.name = newName
 
     def do(self, command):
         command = command.lower()
@@ -289,13 +291,23 @@ class daycare:
             else:
                 print("Pigeon not found or dead, try another pigeon")
 
-        elif command[0] == "end":
+        elif command[0] == "pass":
             self.update()
             print(self.info())
 
         elif command[0] == "help" or command[0] == "h":
             #Update Help Menu
-            print("HELP MENU \nLIST OF COMMANDS: \n\thelp - Calls this menu \n\t info - Shows all info about your pigeon care \n\tshow - Shows you a pigeon of your choice \n\tbreed - Allows you to breed two pigeons \n\tbuy - gives you a random pigeon to buy \n\tsell - allows you to sell a pigeon \n\trename - allows you to rename a pigeon \n\tend month - ends month \n\tquit - Ends the game")
+            print("HELP MENU \n" +
+            "LIST OF COMMANDS: \n\t" +
+            "help - Calls this menu \n\t" +
+            "info - Shows all info about your pigeon care \n\t" +
+            "show - Shows you a pigeon of your choice \n\t" +
+            "breed - Allows you to breed two pigeons \n\t" +
+            "buy - gives you a random pigeon to buy \n\t" +
+            "sell - allows you to sell a pigeon \n\t" +
+            "rename - allows you to rename a pigeon \n\t" +
+            "pass - ends month \n\t" +
+            "quit - Ends the game")
 
         elif command[0] == "clear":
             clearCMD()
