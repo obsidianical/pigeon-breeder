@@ -33,14 +33,19 @@ class daycare:
 
         return randomPigeon
 
+    def random3D6(self):
+        result = 0
+        for i in range(3):
+            result += randint(1, 6)
+
     def buyPigeon(self):
         while True:
             data = {
                 "age":randint(6, 72),
                 "female":bool(getrandbits(1)),
-                "fluff": randint(3, 18),
-                "speed": randint(3, 18),
-                "size": randint(3, 18),
+                "fluff": self.random3D6(),
+                "speed": self.random3D6(),
+                "size": self.random3D6(),
                 "cost":randint(5, 15)
             }
             print("Age: %s Months\nFemale: %s\nCost: %s\nFluffiness: %s\nSize: %s\nSpeed: %s\n"%(data["age"], data["female"], data["cost"], data["fluff"], data["size"], data["speed"]))
@@ -299,7 +304,7 @@ class daycare:
 
         elif command == "help" or command == "h":
             #Update Help Menu
-            print("HELP MENU \nLIST OF COMMANDS: \n\thelp - Calls this menu \n\tshow - Shows you a pigeon of your choice \n\tbreed - Allows you to breed two pigeons \n\tbuy - gives you a random pigeon to buy \n\tsell - allows you to sell a pigeon \n\trename - allows you to rename a pigeon \n\tend month - ends month \n\tquit - Ends the game")
+            print("HELP MENU \nLIST OF COMMANDS: \n\thelp - Calls this menu \n\t info - Shows all info about your pigeon care \n\tshow - Shows you a pigeon of your choice \n\tbreed - Allows you to breed two pigeons \n\tbuy - gives you a random pigeon to buy \n\tsell - allows you to sell a pigeon \n\trename - allows you to rename a pigeon \n\tend month - ends month \n\tquit - Ends the game")
 
         elif command == "clear":
             clearCMD()
