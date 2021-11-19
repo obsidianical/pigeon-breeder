@@ -1,9 +1,11 @@
+Python Version: 3.10
+
 ## ToDo
 - [ ] The Rewrite (v0.1)
   - [ ] Rewrite code
     - [x] Rewrite pigeon class
     - [ ] Rewrite daycare code
-      - [ ] Rewrite do function
+      - [x] Rewrite do function
       - [ ] Rewrite other functions
       - [ ] Add function to rename daycare
       - [ ] Add function to pick random name

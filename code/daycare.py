@@ -248,62 +248,61 @@ class daycare:
 
         command = command.split() # Splits command based on whitespaces
 
-        if command[0] == "breed":
-            if isEmpty(self.didNotActList()):
-                print("There are no pigeons left that can breed this month, either end this month or do something else.")
-                return None
+        match command[0]:
+            case "breed":
+                if isEmpty(self.didNotActList()):
+                    print("There are no pigeons left that can breed this month, either end this month or do something else.")
+                    return None
+                self.breedCommand(command[1], command[2])
 
-            self.breedCommand(command[1], command[2])
+            case "info":
+                print(self.info())
 
-        elif command[0] == "kill":
-            pass
+            case "show":
+                try:
+                    print(self.allPigeons[str(command[1])].show())
+                except KeyError:
+                    print("Pigeon not found")
 
-        elif command[0] == "show":
-            try:
-                print(self.allPigeons[str(command[1])].show())
-            except KeyError:
-                print("Pigeon not found")
+            case "buy":
+                self.buyPigeon()
 
-        elif command[0] == "quit":
-            return 0
+            case "sell":
+                if self.isValidPigeon(command[1]):
+                    self.sellPigeon(command[1])
+                else:
+                    print("Pick another pigeon")
 
-        elif command[0] == "info":
-            print(self.info())
+            case "kill":
+                pass
+            case "rename":
+                if not self.isValidPigeon(command[1]):
+                    print("Pigeon not found or dead, try another pigeon")
+                    return None
+                self.renamePigeon(command[1], command[2])
 
-        elif command[0] == "buy":
-            self.buyPigeon()
+            case "pass":
+                self.update()
+                print(self.info())
 
-        elif command[0] == "sell":
-            if self.isValidPigeon(command[1]):
-                self.sellPigeon(command[1])
-            else:
-                print("Pick another pigeon")
+            case "help" | "h":
+                print("HELP MENU \n" +
+                "LIST OF COMMANDS: \n\t" +
+                "help/h - Calls this menu \n\t" +
+                "info - Shows all info about your pigeon care \n\t" +
+                "show - show [uid] | Shows you a pigeon of your choice \n\t" +
+                "breed - breed [uid] [uid] | Allows you to breed two pigeons \n\t" +
+                "buy - gives you a random pigeon to buy \n\t" +
+                "sell - sell [uid] | allows you to sell a pigeon \n\t" +
+                "rename - rename [uid] [newName] | allows you to rename a pigeon \n\t" +
+                "pass - ends month \n\t" +
+                "quit - Ends the game")
 
-        elif command[0] == "rename":
-            if not self.isValidPigeon(command[1]):
-                print("Pigeon not found or dead, try another pigeon")
-                return None
-            self.renamePigeon(command[1], command[2])
+            case "clear":
+                clearCMD()
 
-        elif command[0] == "pass":
-            self.update()
-            print(self.info())
+            case "quit":
+                return 0
 
-        elif command[0] == "help" or command[0] == "h":
-            print("HELP MENU \n" +
-            "LIST OF COMMANDS: \n\t" +
-            "help - Calls this menu \n\t" +
-            "info - Shows all info about your pigeon care \n\t" +
-            "show - show [uid] | Shows you a pigeon of your choice \n\t" +
-            "breed - breed [uid] [uid] | Allows you to breed two pigeons \n\t" +
-            "buy - gives you a random pigeon to buy \n\t" +
-            "sell - [uid] | allows you to sell a pigeon \n\t" +
-            "rename - rename [uid] [newName] | allows you to rename a pigeon \n\t" +
-            "pass - ends month \n\t" +
-            "quit - Ends the game")
-
-        elif command[0] == "clear":
-            clearCMD()
-
-        else:
-            print("Command Not Found")
+            case _:
+                print("Command Not Found")
