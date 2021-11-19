@@ -15,20 +15,20 @@ class daycare:
 
         self.breedingDifficulty = 25 #the n out of 100 chance to successfully reproduce
 
-    def getCreatureUID(self):
+    def getPigeonUID(self):
         return len(self.allPigeons)
 
-    def createCreature(self, uid, name, sex, parents:list=None):
-        newCreature = creature(uid, name, sex, parents)
-        self.allPigeons[str(newCreature.uid)] = newCreature
-        self.pigeons[str(newCreature.uid)] = newCreature
+    def createPigeon(self, uid, name, sex, parents:list=None):
+        newPigeon = pigeonClass(uid, name, sex, parents)
+        self.allPigeons[str(newPigeon.uid)] = newPigeon
+        self.pigeons[str(newPigeon.uid)] = newPigeon
 
-        return newCreature
+        return newPigeon
 
-    def generateRandomCreature(self):
-        randomCreature = self.createCreature(self.getCreatureUID(), "Randy", bool(getrandbits(1)))
+    def generateRandomPigeon(self):
+        randomPigeon = self.createPigeon(self.getPigeonUID(), "Randy", bool(getrandbits(1)))
 
-        return randomCreature
+        return randomPigeon
 
     def buyPigeon(self):
         while True:
@@ -56,8 +56,8 @@ class daycare:
 
                     continue
 
-                uid = self.getCreatureUID()
-                pigeon = self.createCreature(uid, "Pigeon " + str(uid), data["female"])
+                uid = self.getPigeonUID()
+                pigeon = self.createPigeon(uid, "Pigeon " + str(uid), data["female"])
                 pigeon.age = data["age"]
 
                 break
@@ -79,13 +79,13 @@ class daycare:
 
     def reproduce(self, parents:list, numberOfChildren:int):
         for i in range(numberOfChildren):
-            uid = self.getCreatureUID()
-            child = self.createCreature(uid, "Pigeon " + str(uid), bool(getrandbits(1)), parents)
+            uid = self.getPigeonUID()
+            child = self.createPigeon(uid, "Pigeon " + str(uid), bool(getrandbits(1)), parents)
 
             for parent in parents: #Supports more than two parents!
                 parent.addChild(child)
                 parent.timesBreed += 1
-                parent.acted = False
+                parent.didAct = False
 
     def breed(self, male, female):
         tB = [female.timesBreed, male.timesBreed]
@@ -115,7 +115,7 @@ class daycare:
         for pigeon in self.pigeons:
             pigeon = self.pigeons[str(pigeon)]
             pigeon.age += 1
-            pigeon.acted = False
+            pigeon.didAct = False
 
     def info(self):
         infoString = ("Daycare Name: " + self.name + "\n" +
@@ -145,9 +145,9 @@ class daycare:
     def didNotActList(self):
         # Returns a list of pigeons that didn't act
         listOfPigeons = list()
-        for pigeon in self.pigeons:
-            if pigeon.acted == False:
-                listOfPigeons.append(pigeon)
+        for selectedPigeon in self.pigeons:
+            if selectedPigeon.didAct == False:
+                listOfPigeons.append(selectedPigeon)
         return listOfPigeons
 
     def do(self, command):
@@ -168,7 +168,7 @@ class daycare:
 
                 if pigeonA.isFemale == False:
                     break
-                elif pigeonA.acted == True:
+                elif pigeonA.didAct == True:
                     print("Your targeted pigeon already breed this month")
                     continue
                 else:
@@ -189,7 +189,7 @@ class daycare:
 
                 if pigeonB.isFemale == True:
                     break
-                elif pigeonB.acted == True:
+                elif pigeonB.didAct == True:
                     print("Your targeted pigeon already breed this month")
                     continue
                 else:
