@@ -1,7 +1,7 @@
 ## ToDo
 -[ ] The Rewrite (v0.1)
   -[ ] Rewrite code
-    -[ ] Rewrite pigeon class
+    -[x] Rewrite pigeon class
     -[ ] Rewrite daycare code
       -[ ] Rewrite do function
       -[ ] Rewrite other functions
@@ -9,10 +9,10 @@
       -[ ] Add function to pick random name
     -[ ] Add comments
 -[ ] The Genetic System (v0.2)
-  -[ ] Add a system that prevents from a pigeon to breed multiple times a month
+  -[x] Add a system that prevents from a pigeon to breed multiple times a month
   -[ ] Add genetic system for pigeons
     -[ ] Add genetic diseases
-  -[ ] Add natrual pigeon death
+  -[x] Add natrual pigeon death
 -[ ] The Buisness System (v0.3)
   -[ ] Dynamicly calculate pigeon value
   -[ ] Add championships for different pigeon traits that allow you to earn money
