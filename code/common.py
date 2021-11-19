@@ -1,5 +1,6 @@
-import sys
-import os
+from sys import platform
+from os import system
+from random import randint
 
 """
 Shared Functions
@@ -14,7 +15,13 @@ def inputString():
     return "\nWhat do you do? "
 
 def whatOS():
-    return sys.platform
+    return platform
 
 def clearCMD():
-    os.system('"clear"')
+    system('"clear"')
+
+def random3D6():
+    result = 0
+    for i in range(3):
+        result += randint(1, 6) # This gives a nice bell curve
+    return result

@@ -25,6 +25,9 @@ class pigeonClass:
         #Adds child where needed
         self.children[str(child.uid)] = child
 
+    def getGender(self):
+        return "Female" if self.isFemale else "Male"
+
     def show(self):
         parents = ""
         if self.parents != None:
@@ -35,7 +38,7 @@ class pigeonClass:
             UID: {self.uid}
             Name: {self.name}
             Age: {self.age}
-            Gender: {"Female" if self.isFemale else "Male"}
+            Gender: {self.getGender()}
             Alive: {self.isAlive} {parents}
             "Fluffiness: {self.fluffiness}
             Size: {self.size}

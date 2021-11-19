@@ -34,22 +34,17 @@ class daycare:
 
         return randomPigeon
 
-    def random3D6(self):
-        result = 0
-        for i in range(3):
-            result += randint(1, 6)
-
     def buyPigeon(self):
         while True:
             data = {
                 "age":randint(6, 72),
                 "female":bool(getrandbits(1)),
-                "fluff": self.random3D6(),
-                "speed": self.random3D6(),
-                "size": self.random3D6(),
+                "fluff": random3D6(),
+                "speed": random3D6(),
+                "size": random3D6(),
                 "cost":randint(5, 15)
             }
- 
+
             print(tw.dedent(f"""
                 Age: {data["age"]} Months
                 Gender: {"female" if data["female"] else "male"}
@@ -165,7 +160,7 @@ class daycare:
                 infoString += tw.dedent(f"""\
                     UID: {pigeon.uid};
                     Name: {pigeon.name};
-                    Gender: {"Female" if pigeon.isFemale else "Male"};
+                    Gender: {pigeon.getGender()};
                     DidAct: {pigeon.didAct};
                 """)
         else:
@@ -221,90 +216,71 @@ class daycare:
             return True
         return False
 
+    def breedCommand(self, pigeonAUID, pigeonBUID):
+        try:
+            pigeons = [self.pigeons[pigeonAUID], self.pigeons[pigeonBUID]]
+        except KeyError:
+            return 0
+
+        female = None
+        male = None
+
+        for pigeon in pigeons:
+            if pigeon.isFemale == True and female == None and pigeon.didAct == False:
+                female = pigeon
+                continue
+            elif pigeon.isFemale == False and male == None and pigeon.didAct == False:
+                male = pigeon
+                continue
+            else:
+                return 0
+
+        #result =
+        if self.breed(male, female) == 0:
+            print("Success!")
+        else:
+            print("Failure")
+
     def do(self, command):
         command = command.lower()
 
-        if command == "breed":
+        command = command.split() # Splits command based on whitespaces
+        print(command)
+
+        if command[0] == "breed":
             if isEmpty(self.didNotActList()):
                 print("There are no pigeons left that can breed this month, either end this month or do something else.")
                 return None
-                pass
 
-            while True:
-                pigeonA = input("Pick a male:")
-                confirm = input(f"You sure you want to select {pigeonA}? (y/n)")
-                if confirm.lower() == "n":
-                    continue
+            self.breedCommand(command[1], command[2])
 
-                try:
-                    pigeonA = self.pigeons[str(pigeonA)]
-                except KeyError:
-                    print("Pigeon not found")
-                    continue
-
-                if pigeonA.isFemale == False:
-                    break
-                elif pigeonA.didAct == True:
-                    print("Your targeted pigeon already breed this month")
-                    continue
-                else:
-                    print("You targeted a female pigeon, please pick a male pigeon")
-                    continue
-
-            while True:
-                pigeonB = input("Pick a female:")
-                confirm = input("You sure you want to select " + str(pigeonB) +"?(y/n)")
-                if confirm == "n":
-                    continue
-
-                try:
-                    pigeonB = self.pigeons[str(pigeonB)]
-                except KeyError:
-                    print("Pigeon not found")
-                    continue
-
-                if pigeonB.isFemale == True:
-                    break
-                elif pigeonB.didAct == True:
-                    print("Your targeted pigeon already breed this month")
-                    continue
-                else:
-                    print("You targeted a male pigeon, please pick a female pigeon")
-                    continue
-
-            r = self.breed(pigeonA, pigeonB)
-            if r == 0:
-                print("Success!")
-            else:
-                print("Failure")
-
-        elif command == "kill":
+        elif command[0] == "kill":
             pass
 
-        elif command == "show":
+        elif command[0] == "show":
             pigeonID = input("What pigeon do you want to  see? ")
             try:
                 print(self.allPigeons[str(pigeonID)].show())
             except KeyError:
                 print("Pigeon not found")
 
-        elif command == "quit":
+        elif command[0] == "quit":
             return 0
 
-        elif command == "info":
+        elif command[0] == "info":
             print(self.info())
 
-        elif command == "buy":
+        elif command[0] == "buy":
             self.buyPigeon()
 
-        elif command == "sell":
+        elif command[0] == "sell":
             pigeonUID = input("Which pigeon do you want to sell? ")
             if self.isValidPigeon(pigeonUID):
                 self.sellPigeon(pigeonUID)
             else:
                 print("Pick another pigeon")
 
-        elif command == "rename":
+        elif command[0] == "rename":
             pigeonUID = str(input("Which pigeon do you want to rename? "))
             newName = input("How should the pigeon be called? ")
 
@@ -313,15 +289,15 @@ class daycare:
             else:
                 print("Pigeon not found or dead, try another pigeon")
 
-        elif command == "end month":
+        elif command[0] == "end":
             self.update()
             print(self.info())
 
-        elif command == "help" or command == "h":
+        elif command[0] == "help" or command[0] == "h":
             #Update Help Menu
             print("HELP MENU \nLIST OF COMMANDS: \n\thelp - Calls this menu \n\t info - Shows all info about your pigeon care \n\tshow - Shows you a pigeon of your choice \n\tbreed - Allows you to breed two pigeons \n\tbuy - gives you a random pigeon to buy \n\tsell - allows you to sell a pigeon \n\trename - allows you to rename a pigeon \n\tend month - ends month \n\tquit - Ends the game")
 
-        elif command == "clear":
+        elif command[0] == "clear":
             clearCMD()
 
         else:
