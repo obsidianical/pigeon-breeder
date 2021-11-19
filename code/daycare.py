@@ -47,7 +47,7 @@ class daycare:
 
             print(tw.dedent(f"""
                 Age: {data["age"]} Months
-                Gender: {"female" if data["female"] else "male"}
+                Gender: {"Female" if data["female"] else "Male"}
                 Cost: {data["cost"]}
                 Fluffiness: {data["fluff"]}
                 Size: {data["size"]}
@@ -157,12 +157,7 @@ class daycare:
             infoString += "\n"
             for pigeonKey in self.pigeons.keys():
                 pigeon = self.pigeons[pigeonKey]
-                infoString += tw.dedent(f"""\
-                    UID: {pigeon.uid};
-                    Name: {pigeon.name};
-                    Gender: {pigeon.getGender()};
-                    DidAct: {pigeon.didAct};
-                """)
+                infoString += ("UID: %s; Name: %s; Gender: %s; DidAct: %s"%(pigeon.uid, pigeon.name, pigeon.getGender(), pigeon.didAct))
         else:
             infoString += "\nNone"
         return infoString

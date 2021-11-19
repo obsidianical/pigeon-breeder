@@ -7,7 +7,7 @@ Python Version: 3.10
     - [ ] Rewrite daycare code
       - [x] Rewrite do function
       - [ ] Rewrite other functions
-      - [ ] Add function to rename daycare
+      - [x] Add function to rename daycare
       - [ ] Add function to pick random name
     - [ ] Add comments
 - [ ] The Genetic System (v0.2)
