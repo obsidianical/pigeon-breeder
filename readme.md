@@ -16,9 +16,9 @@ Python Version: 3.10
     - [ ] Add genetic diseases
     - [ ] Add genetic traits
     - [x] Add genetic values
-  - [x] Add natrual pigeon death
-- [ ] The Buisness System (v0.3)
-  - [ ] Dynamicly calculate pigeon value
+  - [x] Add natural pigeon death
+- [ ] The Business System (v0.3)
+  - [ ] Dynamically calculate pigeon value
   - [ ] Add championships for different pigeon traits that allow you to earn money
 
 - [ ] Other ToDos

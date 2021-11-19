@@ -51,14 +51,11 @@ class daycare:
                 Cost: {data["cost"]}
                 Fluffiness: {data["fluff"]}
                 Size: {data["size"]}
-                Speed: {data["speed"]}
-            """))
+                Speed: {data["speed"]}"""))
 
 
             i = input("Do you want to buy the pigeon?(Yes(y)/No(n)/Abort(a)) ")
             i = i.lower()
-
-            print("\n")
 
             if i == "n":
                 continue
@@ -184,6 +181,7 @@ class daycare:
         return listOfPigeons
 
     def didNotActList(self):
+        # Returns a list of pigeons that did act
         listOfPigeons = list()
         for pigeonKey in self.pigeons:
             selectedPigeon = self.pigeons[pigeonKey]
@@ -215,6 +213,7 @@ class daycare:
         try:
             pigeons = [self.pigeons[pigeonAUID], self.pigeons[pigeonBUID]]
         except KeyError:
+            print("You picked one or more pigeons that don't exist!")
             return 0
 
         female = None
@@ -228,6 +227,7 @@ class daycare:
                 male = pigeon
                 continue
             else:
+                print("You picked two pigeons of the same gender!")
                 return 0
 
         if self.breed(male, female) == 0:

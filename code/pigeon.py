@@ -37,12 +37,11 @@ class pigeonClass:
         stringyBoi = f"""\
             UID: {self.uid}
             Name: {self.name}
-            Age: {self.age}
+            Age: {self.age} Months
             Gender: {self.getGender()}
             Alive: {self.isAlive} {parents}
-            "Fluffiness: {self.fluffiness}
+            Fluffiness: {self.fluffiness}
             Size: {self.size}
-            Speed: {self.speed}
-        """
+            Speed: {self.speed}"""
 
         return tw.dedent(stringyBoi)
