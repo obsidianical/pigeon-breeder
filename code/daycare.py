@@ -260,9 +260,8 @@ class daycare:
             pass
 
         elif command[0] == "show":
-            pigeonID = input("What pigeon do you want to  see? ")
             try:
-                print(self.allPigeons[str(pigeonID)].show())
+                print(self.allPigeons[str(command[1])].show())
             except KeyError:
                 print("Pigeon not found")
 
@@ -276,27 +275,22 @@ class daycare:
             self.buyPigeon()
 
         elif command[0] == "sell":
-            pigeonUID = input("Which pigeon do you want to sell? ")
-            if self.isValidPigeon(pigeonUID):
-                self.sellPigeon(pigeonUID)
+            if self.isValidPigeon(command[1]):
+                self.sellPigeon(command[1])
             else:
                 print("Pick another pigeon")
 
         elif command[0] == "rename":
-            pigeonUID = str(input("Which pigeon do you want to rename? "))
-            newName = input("How should the pigeon be called? ")
-
-            if self.isValidPigeon(pigeonUID):
-                self.renamePigeon(pigeonUID, newName)
-            else:
+            if not self.isValidPigeon(command[1]):
                 print("Pigeon not found or dead, try another pigeon")
+                return None
+            self.renamePigeon(command[1], command[2])
 
         elif command[0] == "pass":
             self.update()
             print(self.info())
 
         elif command[0] == "help" or command[0] == "h":
-            #Update Help Menu
             print("HELP MENU \n" +
             "LIST OF COMMANDS: \n\t" +
             "help - Calls this menu \n\t" +
@@ -305,7 +299,7 @@ class daycare:
             "breed - Allows you to breed two pigeons \n\t" +
             "buy - gives you a random pigeon to buy \n\t" +
             "sell - allows you to sell a pigeon \n\t" +
-            "rename - allows you to rename a pigeon \n\t" +
+            "rename - rename [uid] [newName] | allows you to rename a pigeon \n\t" +
             "pass - ends month \n\t" +
             "quit - Ends the game")
 
