@@ -1,5 +1,11 @@
 Python Version: 3.10
 
+## How To Use
+Open the CMD  
+Navigate to the code folder of this project  
+Run 'python3.10 run.py'  
+Enjoy!  
+
 ## ToDo
 - [x] The Rewrite (v0.1)
   - [x] Rewrite code
@@ -23,4 +29,4 @@ Python Version: 3.10
 
 - [ ] Other ToDos
   - [ ] Add family tree printout
-	- [ ] Make naming convention of variables unified
+	- [x] Make naming convention of variables unified
