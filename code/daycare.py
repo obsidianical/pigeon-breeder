@@ -247,7 +247,6 @@ class daycare:
         command = command.lower()
 
         command = command.split() # Splits command based on whitespaces
-        print(command)
 
         if command[0] == "breed":
             if isEmpty(self.didNotActList()):
