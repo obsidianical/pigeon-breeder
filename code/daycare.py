@@ -1,7 +1,8 @@
 from pigeon import *
 from common import *
-from random import getrandbits, randint
+from random import getrandbits, randint, choice
 import textwrap as tw
+from json import load
 
 class daycare:
     def __init__(self, name):
@@ -16,8 +17,14 @@ class daycare:
 
         self.breedingDifficulty = 25 #the n out of 100 chance to successfully reproduce
 
+        self.randomNames = load(open("pigeonNames.json", "r"))
+        self.help = open("help.txt", "r").read()
+
     def getPigeonUID(self):
-        return len(self.allPigeons)
+        return len(self.allPigeons) # Returns a UID for the most recent pigeon
+
+    def getRandomName(self, sex:str):
+        return choice(self.randomNames[sex.lower()]) # Returns random name
 
     def createPigeon(self, uid, name, sex, parents:list=None):
         newPigeon = pigeonClass(uid, name, sex, parents)
@@ -160,6 +167,8 @@ class daycare:
         return infoString
 
     def renamePigeon(self, pigeonUID, name):
+        if name == "r":
+            name = self.getRandomName(self.pigeons[str(pigeonUID)].getGender())
         self.pigeons[str(pigeonUID)].name = name
 
     def isValidPigeon(self, pigeonUID):
@@ -269,7 +278,8 @@ class daycare:
                     print("Pick another pigeon")
 
             case "kill":
-                pass
+                pass # ToDo: Add way for player to activly kill pigeons
+
             case "rename":
                 if not self.isValidPigeon(command[1]):
                     print("Pigeon not found or dead, try another pigeon")
@@ -281,17 +291,7 @@ class daycare:
                 print(self.info())
 
             case "help" | "h":
-                print("HELP MENU \n" +
-                "LIST OF COMMANDS: \n\t" +
-                "help/h - Calls this menu \n\t" +
-                "info - Shows all info about your pigeon care \n\t" +
-                "show - show [uid] | Shows you a pigeon of your choice \n\t" +
-                "breed - breed [uid] [uid] | Allows you to breed two pigeons \n\t" +
-                "buy - gives you a random pigeon to buy \n\t" +
-                "sell - sell [uid] | allows you to sell a pigeon \n\t" +
-                "rename - rename [uid] [newName] | allows you to rename a pigeon \n\t" +
-                "pass - ends month \n\t" +
-                "quit - Ends the game")
+                print(self.help)
 
             case "clear":
                 clearCMD()

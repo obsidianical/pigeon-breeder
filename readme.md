@@ -1,15 +1,15 @@
 Python Version: 3.10
 
 ## ToDo
-- [ ] The Rewrite (v0.1)
-  - [ ] Rewrite code
+- [x] The Rewrite (v0.1)
+  - [x] Rewrite code
     - [x] Rewrite pigeon class
-    - [ ] Rewrite daycare code
+    - [x] Rewrite daycare code
       - [x] Rewrite do function
-      - [ ] Rewrite other functions
+      - [x] Rewrite other functions
       - [x] Add function to rename daycare
-      - [ ] Add function to pick random name
-    - [ ] Add comments
+      - [x] Add function to pick random name
+    - [x] Add comments
 - [ ] The Genetic System (v0.2)
   - [x] Add a system that prevents from a pigeon to breed multiple times a month
   - [ ] Add genetic system for pigeons
