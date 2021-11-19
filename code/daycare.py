@@ -1,6 +1,8 @@
 from pigeon import *
 from common import *
-from random import getrandbits, randint
+from random import getrandbits, randint, choice
+import textwrap as tw
+from json import load
 
 class daycare:
     def __init__(self, name):
@@ -15,8 +17,14 @@ class daycare:
 
         self.breedingDifficulty = 25 #the n out of 100 chance to successfully reproduce
 
+        self.randomNames = load(open("pigeonNames.json", "r"))
+        self.help = open("help.txt", "r").read()
+
     def getPigeonUID(self):
-        return len(self.allPigeons)
+        return len(self.allPigeons) # Returns a UID for the most recent pigeon
+
+    def getRandomName(self, sex:str):
+        return choice(self.randomNames[sex.lower()]) # Returns random name
 
     def createPigeon(self, uid, name, sex, parents:list=None):
         newPigeon = pigeonClass(uid, name, sex, parents)
@@ -38,17 +46,23 @@ class daycare:
             data = {
                 "age":randint(6, 72),
                 "female":bool(getrandbits(1)),
-                "fluff": randint(3, 18),
-                "speed": randint(3, 18),
-                "size": randint(3, 18),
+                "fluff": random3D6(),
+                "speed": random3D6(),
+                "size": random3D6(),
                 "cost":randint(5, 15)
             }
-            print("Age: %s Months\nFemale: %s\nCost: %s\nFluffiness: %s\nSize: %s\nSpeed: %s\n"%(data["age"], data["female"], data["cost"], data["fluff"], data["size"], data["speed"]))
+
+            print(tw.dedent(f"""
+                Age: {data["age"]} Months
+                Gender: {"Female" if data["female"] else "Male"}
+                Cost: {data["cost"]}
+                Fluffiness: {data["fluff"]}
+                Size: {data["size"]}
+                Speed: {data["speed"]}"""))
+
 
             i = input("Do you want to buy the pigeon?(Yes(y)/No(n)/Abort(a)) ")
             i = i.lower()
-
-            print("\n")
 
             if i == "n":
                 continue
@@ -84,7 +98,7 @@ class daycare:
             self.death(self.pigeons[pigeonUID])
             print("Pigeon sold!")
         else:
-            print("Okay, than not")
+            print("Okay, then not")
 
     def reproduce(self, parents:list, numberOfChildren:int):
         for i in range(numberOfChildren):
@@ -147,12 +161,14 @@ class daycare:
             infoString += "\n"
             for pigeonKey in self.pigeons.keys():
                 pigeon = self.pigeons[pigeonKey]
-                infoString += "UID: %s; Name: %s; Female: %s; DidAct: %s \n"%(pigeon.uid, pigeon.name, pigeon.isFemale, pigeon.didAct)
+                infoString += ("UID: %s; Name: %s; Gender: %s; DidAct: %s"%(pigeon.uid, pigeon.name, pigeon.getGender(), pigeon.didAct))
         else:
             infoString += "\nNone"
         return infoString
 
     def renamePigeon(self, pigeonUID, name):
+        if name == "r":
+            name = self.getRandomName(self.pigeons[str(pigeonUID)].getGender())
         self.pigeons[str(pigeonUID)].name = name
 
     def isValidPigeon(self, pigeonUID):
@@ -174,6 +190,7 @@ class daycare:
         return listOfPigeons
 
     def didNotActList(self):
+        # Returns a list of pigeons that did act
         listOfPigeons = list()
         for pigeonKey in self.pigeons:
             selectedPigeon = self.pigeons[pigeonKey]
@@ -201,108 +218,86 @@ class daycare:
             return True
         return False
 
+    def breedCommand(self, pigeonAUID:int, pigeonBUID:int):
+        try:
+            pigeons = [self.pigeons[pigeonAUID], self.pigeons[pigeonBUID]]
+        except KeyError:
+            print("You picked one or more pigeons that don't exist!")
+            return 0
+
+        female = None
+        male = None
+
+        for pigeon in pigeons:
+            if pigeon.isFemale == True and female == None and pigeon.didAct == False:
+                female = pigeon
+                continue
+            elif pigeon.isFemale == False and male == None and pigeon.didAct == False:
+                male = pigeon
+                continue
+            else:
+                print("You picked two pigeons of the same gender!")
+                return 0
+
+        if self.breed(male, female) == 0:
+            print("Success!")
+        else:
+            print("Failure")
+
+    def renamePigeonCare(self, newName:str):
+        self.name = newName
+
     def do(self, command):
         command = command.lower()
 
-        if command == "breed":
-            if isEmpty(self.didNotActList()):
-                print("There are no pigeons left that can breed this month, either end this month or do something else.")
-                return None
-                pass
+        command = command.split() # Splits command based on whitespaces
 
-            while True:
-                pigeonA = input("Pick a male:")
-                confirm = input("You sure you want to select " + str(pigeonA) +"? (y/n)")
-                if confirm.lower() == "n":
-                    continue
+        match command[0]:
+            case "breed":
+                if isEmpty(self.didNotActList()):
+                    print("There are no pigeons left that can breed this month, either end this month or do something else.")
+                    return None
+                self.breedCommand(command[1], command[2])
 
+            case "info":
+                print(self.info())
+
+            case "show":
                 try:
-                    pigeonA = self.pigeons[str(pigeonA)]
+                    print(self.allPigeons[str(command[1])].show())
                 except KeyError:
                     print("Pigeon not found")
-                    continue
 
-                if pigeonA.isFemale == False:
-                    break
-                elif pigeonA.didAct == True:
-                    print("Your targeted pigeon already breed this month")
-                    continue
+            case "buy":
+                self.buyPigeon()
+
+            case "sell":
+                if self.isValidPigeon(command[1]):
+                    self.sellPigeon(command[1])
                 else:
-                    print("You targeted a female pigeon, please pick a male pigeon")
-                    continue
+                    print("Pick another pigeon")
 
-            while True:
-                pigeonB = input("Pick a female:")
-                confirm = input("You sure you want to select " + str(pigeonB) +"?(y/n)")
-                if confirm == "n":
-                    continue
+            case "kill":
+                pass # ToDo: Add way for player to activly kill pigeons
 
-                try:
-                    pigeonB = self.pigeons[str(pigeonB)]
-                except KeyError:
-                    print("Pigeon not found")
-                    continue
+            case "rename":
+                if not self.isValidPigeon(command[1]):
+                    print("Pigeon not found or dead, try another pigeon")
+                    return None
+                self.renamePigeon(command[1], command[2])
 
-                if pigeonB.isFemale == True:
-                    break
-                elif pigeonB.didAct == True:
-                    print("Your targeted pigeon already breed this month")
-                    continue
-                else:
-                    print("You targeted a male pigeon, please pick a female pigeon")
-                    continue
+            case "pass":
+                self.update()
+                print(self.info())
 
-            r = self.breed(pigeonA, pigeonB)
-            if r == 0:
-                print("Success!")
-            else:
-                print("Failure")
+            case "help" | "h":
+                print(self.help)
 
-        elif command == "kill":
-            pass
+            case "clear":
+                clearCMD()
 
-        elif command == "show":
-            pigeonID = input("What pigeon do you want to  see? ")
-            try:
-                print(self.allPigeons[str(pigeonID)].show())
-            except KeyError:
-                print("Pigeon not found")
+            case "quit":
+                return 0
 
-        elif command == "quit":
-            return 0
-
-        elif command == "info":
-            print(self.info())
-
-        elif command == "buy":
-            self.buyPigeon()
-
-        elif command == "sell":
-            pigeonUID = input("Which pigeon do you want to sell? ")
-            if self.isValidPigeon(pigeonUID):
-                self.sellPigeon(pigeonUID)
-            else:
-                print("Pick another pigeon")
-
-        elif command == "rename":
-            pigeonUID = str(input("Which pigeon do you want to rename? "))
-            newName = input("How should the pigeon be called? ")
-
-            if self.isValidPigeon(pigeonUID):
-                self.renamePigeon(pigeonUID, newName)
-            else:
-                print("Pigeon not found or dead, try another pigeon")
-
-        elif command == "end month":
-            self.update()
-            print(self.info())
-
-        elif command == "help" or command == "h":
-            #Update Help Menu
-            print("HELP MENU \nLIST OF COMMANDS: \n\thelp - Calls this menu \n\tshow - Shows you a pigeon of your choice \n\tbreed - Allows you to breed two pigeons \n\tbuy - gives you a random pigeon to buy \n\tsell - allows you to sell a pigeon \n\trename - allows you to rename a pigeon \n\tend month - ends month \n\tquit - Ends the game")
-
-        elif command == "clear":
-            clearCMD()
-
-        else:
-            print("Command Not Found")
+            case _:
+                print("Command Not Found")
