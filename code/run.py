@@ -6,7 +6,11 @@ def main():
     care.do("help")
 
     while True:
-        if care.do(input(inputString())) == 0:
-            break
+        try:
+            if care.do(input(inputString())) == 0:
+                break
+        except EOFError:
+                print("\n")
+                break
 
 main()

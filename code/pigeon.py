@@ -13,6 +13,10 @@ class pigeonClass:
 
         self.didAct = True
 
+        self.fluffiness = 0
+        self.speed = 0
+        self.size = 0
+
         self.parents = parents
         self.children = dict() #Dictionary of all children
 
@@ -26,5 +30,5 @@ class pigeonClass:
             for parent in self.parents:
                 parents += "Parent: " + str(parent.uid) + "\n"
 
-        stringyBoi = "UID: " + str(self.uid) + "\nName: " + str(self.name) + "\nAge: " + str(self.age) + "\nFemale: " + str(self.isFemale) + "\nAlive: " + str(self.isAlive) + "\n" + parents
+        stringyBoi = "UID: " + str(self.uid) + "\nName: " + str(self.name) + "\nAge: " + str(self.age) + "\nFemale: " + str(self.isFemale) + "\nAlive: " + str(self.isAlive) + "\n" + parents + "Fluffiness: %s\nSize: %s\nSpeed: %s\n"%(self.fluffiness, self.size, self.speed)
         return stringyBoi
