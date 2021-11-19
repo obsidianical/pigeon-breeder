@@ -1,6 +1,7 @@
 from pigeon import *
 from common import *
 from random import getrandbits, randint
+import textwrap as tw
 
 class daycare:
     def __init__(self, name):
@@ -48,7 +49,16 @@ class daycare:
                 "size": self.random3D6(),
                 "cost":randint(5, 15)
             }
-            print("Age: %s Months\nFemale: %s\nCost: %s\nFluffiness: %s\nSize: %s\nSpeed: %s\n"%(data["age"], data["female"], data["cost"], data["fluff"], data["size"], data["speed"]))
+ 
+            print(tw.dedent(f"""
+                Age: {data["age"]} Months
+                Gender: {"female" if data["female"] else "male"}
+                Cost: {data["cost"]}
+                Fluffiness: {data["fluff"]}
+                Size: {data["size"]}
+                Speed: {data["speed"]}
+            """))
+
 
             i = input("Do you want to buy the pigeon?(Yes(y)/No(n)/Abort(a)) ")
             i = i.lower()
@@ -89,7 +99,7 @@ class daycare:
             self.death(self.pigeons[pigeonUID])
             print("Pigeon sold!")
         else:
-            print("Okay, than not")
+            print("Okay, then not")
 
     def reproduce(self, parents:list, numberOfChildren:int):
         for i in range(numberOfChildren):
@@ -152,7 +162,12 @@ class daycare:
             infoString += "\n"
             for pigeonKey in self.pigeons.keys():
                 pigeon = self.pigeons[pigeonKey]
-                infoString += "UID: %s; Name: %s; Female: %s; DidAct: %s \n"%(pigeon.uid, pigeon.name, pigeon.isFemale, pigeon.didAct)
+                infoString += tw.dedent(f"""\
+                    UID: {pigeon.uid};
+                    Name: {pigeon.name};
+                    Gender: {"Female" if pigeon.isFemale else "Male"};
+                    DidAct: {pigeon.didAct};
+                """)
         else:
             infoString += "\nNone"
         return infoString
@@ -217,7 +232,7 @@ class daycare:
 
             while True:
                 pigeonA = input("Pick a male:")
-                confirm = input("You sure you want to select " + str(pigeonA) +"? (y/n)")
+                confirm = input(f"You sure you want to select {pigeonA}? (y/n)")
                 if confirm.lower() == "n":
                     continue
 
