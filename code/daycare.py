@@ -5,7 +5,7 @@ import textwrap as tw
 from json import load
 
 class daycare:
-    def __init__(self, name):
+    def __init__(self, name, randomNameFilePath:str, helpFilePath:str):
         self.name = name
 
         self.month = 1
@@ -17,8 +17,8 @@ class daycare:
 
         self.breedingDifficulty = 25 #the n out of 100 chance to successfully reproduce
 
-        self.randomNames = load(open("pigeonNames.json", "r"))
-        self.help = open("help.txt", "r").read()
+        self.randomNames = load(open(randomNameFilePath, "r"))
+        self.help = open(helpFilePath, "r").read()
 
     def getPigeonUID(self):
         return len(self.allPigeons) # Returns a UID for the most recent pigeon
