@@ -35,9 +35,9 @@ class daycare:
 
     def generateRandomPigeon(self):
         randomPigeon = self.createPigeon(self.getPigeonUID(), "Randy", bool(getrandbits(1)))
-        randomPigeon.fluffiness = randint(3, 18)
-        randomPigeon.speed = randint(3, 18)
-        randomPigeon.size = randint(3, 18)
+        randomPigeon.genetics["fluff"] = randint(3, 18)
+        randomPigeon.genetics["speed"] = randint(3, 18)
+        randomPigeon.genetics["size"] = randint(3, 18)
 
         return randomPigeon
 
@@ -80,9 +80,9 @@ class daycare:
                 uid = self.getPigeonUID()
                 pigeon = self.createPigeon(uid, "Pigeon " + str(uid), data["female"])
                 pigeon.age = data["age"]
-                pigeon.fluffiness = data["fluff"]
-                pigeon.speed = data["speed"]
-                pigeon.size = data["size"]
+                pigeon.genetics["fluff"] = data["fluff"]
+                pigeon.genetics["speed"] = data["speed"]
+                pigeon.genetics["size"] = data["size"]
 
                 break
 
@@ -106,9 +106,9 @@ class daycare:
             pigeonUID = self.getPigeonUID()
             child = self.createPigeon(uid, "Pigeon " + str(pigeonUID), bool(getrandbits(1)), parents)
             childGenetics = self.genetics(parents)
-            child.fluffiness = childGenetics["fluff"]
-            child.speed = childGenetics["speed"]
-            child.size = childGenetics["size"]
+            child.genetics["fluff"] = childGenetics["fluff"]
+            child.genetics["speed"] = childGenetics["speed"]
+            child.genetics["size"] = childGenetics["size"]
             if self.deathConditions(child):
                 self.death(child)
 
@@ -204,9 +204,9 @@ class daycare:
         speed = 0
         size = 0
         for pigeon in parents:
-            fluffiness += pigeon.fluffiness
-            speed += pigeon.speed
-            size += pigeon.size
+            fluffiness += pigeon.genetics["fluff"]
+            speed += pigeon.genetics["speed"]
+            size += pigeon.genetics["size"]
 
         fluffiness = int(fluffiness / len(parents)) + randint(-3, 3)
         speed = int(speed / len(parents)) + randint(-3, 3)
@@ -215,7 +215,7 @@ class daycare:
         return {"fluff":fluffiness, "speed":speed, "size":size}
 
     def deathConditions(self, pigeon):
-        if 72 < pigeon.age or pigeon.speed < 1 or pigeon.size < 1 or pigeon.fluffiness < 1:
+        if 72 < pigeon.age or pigeon.genetics["speed"] < 1 or pigeon.genetics["speed"] < 1 or pigeon.genetics["fluff"] < 1:
             return True
         return False
 

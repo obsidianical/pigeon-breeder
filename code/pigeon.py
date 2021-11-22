@@ -14,9 +14,11 @@ class pigeonClass:
 
         self.didAct = True
 
-        self.fluffiness = 0
-        self.speed = 0
-        self.size = 0
+		self.genetics = {
+			"fluff":1,
+			"speed":1,
+			"size":1
+		}
 
         self.parents = parents
         self.children = dict() #Dictionary of all children
@@ -40,8 +42,8 @@ class pigeonClass:
             Age: {self.age} Months
             Gender: {self.getGender()}
             Alive: {self.isAlive} {parents}
-            Fluffiness: {self.fluffiness}
-            Size: {self.size}
-            Speed: {self.speed}"""
+            Fluffiness: {self.genetics["fluff"]}
+            Size: {self.genetics["size"]}
+            Speed: {self.genetics["speed"]}"""
 
         return tw.dedent(stringyBoi)
