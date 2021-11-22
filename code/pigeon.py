@@ -30,6 +30,17 @@ class pigeonClass:
 	def getGender(self):
 		return "Female" if self.isFemale else "Male"
 
+	def anyGeneticValueOneOrLess(self):
+		for geneticValueKey in self.genetics.keys():
+			if self.genetics[geneticValueKey] <= 1:
+				return True
+
+	def returnEmptyGenetics(self):
+		genetics = dict()
+		for geneticKey in self.genetics.keys():
+			genetics[geneticKey] = 0
+		return genetics
+
 	def show(self):
 		parents = ""
 		if self.parents != None:

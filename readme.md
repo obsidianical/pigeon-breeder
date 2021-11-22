@@ -53,7 +53,7 @@ Represents how fast the pigeon is, important for selling them as race pigeons, a
 	- [ ] Add genetic diseases
 	- [ ] Add genetic traits
 	- [x] Add genetic values
-	  - [ ] Rewrite to be more modular
+	  - [x] Rewrite to be more modular
   - [x] Add natural pigeon death
 - [ ] The Business System (v0.3)
   - [ ] Dynamically calculate pigeon value

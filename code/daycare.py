@@ -48,7 +48,7 @@ class daycare:
 				"female":bool(getrandbits(1)),
 				"fluff": random3D6(),
 				"speed": random3D6(),
-				"size": random3D6(),
+				"size": random3D6(), # ToDo: Add dynamic support for more values
 				"cost":randint(5, 15)
 			}
 
@@ -58,7 +58,7 @@ class daycare:
 				Cost: {data["cost"]}
 				Fluffiness: {data["fluff"]}
 				Size: {data["size"]}
-				Speed: {data["speed"]}"""))
+				Speed: {data["speed"]}""")) # ToDo: Replace with dynamic value output for more thant the current traits
 
 
 			confirmation = input("Do you want to buy the pigeon?(Yes(y)/No(n)/Abort(a)) ")
@@ -80,9 +80,11 @@ class daycare:
 				uid = self.getPigeonUID()
 				pigeon = self.createPigeon(uid, "Pigeon " + str(uid), data["female"])
 				pigeon.age = data["age"]
-				pigeon.genetics["fluff"] = data["fluff"]
-				pigeon.genetics["speed"] = data["speed"]
-				pigeon.genetics["size"] = data["size"]
+				for geneticKey in pigeon.genetics:
+					pigeon.genetics[geneticKey] = data[geneticKey]
+				#pigeon.genetics["fluff"] = data["fluff"]
+				#pigeon.genetics["speed"] = data["speed"]
+				#pigeon.genetics["size"] = data["size"]
 
 				break
 
@@ -104,11 +106,9 @@ class daycare:
 	def reproduce(self, parents:list, numberOfChildren:int):
 		for i in range(numberOfChildren):
 			pigeonUID = self.getPigeonUID()
-			child = self.createPigeon(uid, "Pigeon " + str(pigeonUID), bool(getrandbits(1)), parents)
-			childGenetics = self.genetics(parents)
-			child.genetics["fluff"] = childGenetics["fluff"]
-			child.genetics["speed"] = childGenetics["speed"]
-			child.genetics["size"] = childGenetics["size"]
+			child = self.createPigeon(pigeonUID, "Pigeon " + str(pigeonUID), bool(getrandbits(1)), parents)
+			child.genetics = self.genetics(parents)
+
 			if self.deathConditions(child):
 				self.death(child)
 
@@ -162,10 +162,11 @@ class daycare:
 			infoString += "\n"
 			for pigeonKey in self.pigeons.keys():
 				pigeon = self.pigeons[pigeonKey]
-				infoString += ("UID: %s; Name: %s; Gender: %s; DidAct: %s"%(pigeon.uid, pigeon.name, pigeon.getGender(), pigeon.didAct))
+				infoString += ("UID: %s; Name: %s; Gender: %s; DidAct: %s\n"%(pigeon.uid, pigeon.name, pigeon.getGender(), pigeon.didAct))
 		else:
 			infoString += "\nNone"
-		return infoString
+
+		return infoString.rstrip()
 
 	def renamePigeon(self, pigeonUID, name):
 		if name == "r":
@@ -200,22 +201,19 @@ class daycare:
 		return lopthna
 
 	def genetics(self, parents):
-		fluffiness = 0
-		speed = 0
-		size = 0
+		geneticDict = parents[0].returnEmptyGenetics()
+
 		for pigeon in parents:
-			fluffiness += pigeon.genetics["fluff"]
-			speed += pigeon.genetics["speed"]
-			size += pigeon.genetics["size"]
+			for geneticKey in pigeon.genetics:
+				geneticDict[geneticKey] += pigeon.genetics[geneticKey]
 
-		fluffiness = int(fluffiness / len(parents)) + randint(-3, 3)
-		speed = int(speed / len(parents)) + randint(-3, 3)
-		size = int(size / len(parents)) + randint(-3, 3)
+		for geneticKey in geneticDict:
+			geneticDict[geneticKey] = int(geneticDict[geneticKey] / len(parents)) + randint(-3, 3)
 
-		return {"fluff":fluffiness, "speed":speed, "size":size}
+		return geneticDict
 
 	def deathConditions(self, pigeon):
-		if 72 < pigeon.age or pigeon.genetics["speed"] < 1 or pigeon.genetics["speed"] < 1 or pigeon.genetics["fluff"] < 1:
+		if 72 < pigeon.age or pigeon.anyGeneticValueOneOrLess():
 			return True
 		return False
 
@@ -267,6 +265,8 @@ class daycare:
 				try:
 					print(self.allPigeons[str(command[1])].show())
 				except KeyError:
+					print("Pigeon not found")
+				except IndexError:
 					print("Pigeon not found")
 
 			case "buy":
