@@ -30,3 +30,6 @@ Enjoy!
 - [ ] Other ToDos
   - [ ] Add family tree printout
 	- [x] Make naming convention of variables unified
+
+## Inspirations
+- Crusader Kings II for portray system
