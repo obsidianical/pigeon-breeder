@@ -1,12 +1,12 @@
 {
   "male":[
-    "Bob",
-    "Fred",
-    "Taubias"
+	"Bob",
+	"Fred",
+	"Taubias"
   ],
   "female":[
-    "Emma",
-    "Elizabeth",
-    "Berbel"
+	"Emma",
+	"Elizabeth",
+	"Berbel"
   ]
 }
