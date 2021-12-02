@@ -1,4 +1,3 @@
-
 # Dynamic function calls
 
 def hello():
@@ -11,4 +10,7 @@ calls = {
 	"world":world # Same as above but for world
 }
 
-calls["hello"]() # This calls the function as linked in calls
+#calls["hello"]() # This calls the function as linked in calls
+
+for key in calls:
+	calls[key]()
