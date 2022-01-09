@@ -20,6 +20,10 @@ Enjoy!
 - [ ] The Business System (v0.3)
   - [x] Dynamically calculate pigeon value
   - [ ] Add championships for different pigeon traits that allow you to earn money
+		- [ ] Race, challenges speed
+		- [ ] Fight, challenges size
+		- [ ] Contest, challenges fluff
+		- [ ] Add way to add dynamic championships/tournies
 - [ ] Other ToDo
   - [ ] Add family tree printout
 
@@ -27,4 +31,4 @@ Enjoy!
 - Crusader Kings II for portray system
 
 ## For people contributing code
-Use tabs, no spaces
+Use tabs, no spaces  
