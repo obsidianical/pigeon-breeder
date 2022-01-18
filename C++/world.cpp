@@ -1,10 +1,11 @@
 #include <iostream>
+#include <map>
+#include <list>
+#include "./json.hpp"
 
-int main() {
-    World w;
-    
-    return 0;
-}
+using namespace nlohmann;
+using std::string;
+using std::map;
 
 void print(std::string newString) {
     // If you want to complain about this you can kindly fuck off
@@ -14,23 +15,23 @@ void print(std::string newString) {
 class World {
     public:
         int getMonth() {
-            return month;
+            return calendar["month"];
         }
 
         void setMonth(int newMonth) {
-            month = newMonth;
+            calendar["month"] = newMonth;
         }
 
         int getYear() {
-            return year;
+            return calendar["year"];
         }
 
         void setYear(int newYear) {
-            year = newYear;
+            calendar["year"] = newYear;
         }
 
         std::string getDate() {
-            return std::to_string(month) + "/" + std::to_string(year); // This simple trick is HATED by Rust programmers! Just add three strings together.
+            return std::to_string(calendar["month"]) + "." + std::to_string(calendar["year"]); // This simple trick is HATED by Rust programmers! Just add three strings together.
         }
 
         void setWorldname(std::string newWorldname) {
@@ -44,9 +45,17 @@ class World {
     private:
         std::string worldname;
 
-        int month = 1;
-        int year = 0;
+		map<string, int> calendar {
+			{"month", 1},
+			{"year", 0}
+		};
+
         int wealth = 50;
 
-
 };
+
+int main() {
+    World w;
+    
+    return 0;
+}
