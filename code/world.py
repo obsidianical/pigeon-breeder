@@ -12,11 +12,11 @@ class World:
 
         self.wealth = 50
 
-        self.randomNames = load(open("../input/pigeonNames.json", "r"))
-        self.help = open("../input/help.txt", "r").read()
-        self.genes = load(open("../input/genetics.json"))["geneBlocks"]
+        self.randomNames = load(open("./input/pigeonNames.json", "r"))
+        self.help = open("./input/help.txt", "r").read()
+        self.genes = load(open("./input/genetics.json"))["geneBlocks"]
         self.geneValues = ["fluff", "speed", "size"]
-        self.alleles = load(open("../input/genetics.json"))["possibleGenes"]
+        self.alleles = load(open("./input/genetics.json"))["possibleGenes"]
 
         self.species = dict() # A dictionary with all species
         self.cares = dict() # A dictionary with all cares
