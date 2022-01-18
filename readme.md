@@ -26,6 +26,8 @@ Enjoy!
 		- [ ] Add way to add dynamic championships/tournies
 - [ ] Other ToDo
   - [ ] Add family tree printout
+-[ ] Compile code to exe for easy use  
+	-[ ] !!IMPORTANT!! !Kill who ever decided that getting an aneurysm while trying to compile python code to an exe is needed! !!IMPORTANT!!  
 
 ## Inspirations
 - Crusader Kings II for portray system
