@@ -21,7 +21,7 @@ class Creature(Genetics):
 
 		self.didAct = True
 
-	def addChildren(self, children:list=list(), parents:list=list()):
+	def add_children(self, children:list=list(), parents:list=list()):
 		parents.append(self) # Makes sure self is always in the list
 		parents = list(set(parents)) # Removes duplicates from the list
 		children = list(set(children)) # Same as above but for children
@@ -29,7 +29,7 @@ class Creature(Genetics):
 		for parent in parents:
 			parent.children = children
 
-	def returnParentsAsString(self):
+	def return_parents_as_string(self):
 		parentString = ""
 
 		for parentUID in self.parents:
@@ -38,7 +38,7 @@ class Creature(Genetics):
 
 		return parentString # If no parents exist for the creature returns an empty string
 
-	def getGender(self):
+	def get_gender(self):
 		# Converts self.isFemale into a string that either says female or male
 		return "female" if self.isFemale else "male"
 

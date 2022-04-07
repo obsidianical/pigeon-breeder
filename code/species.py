@@ -13,7 +13,7 @@ class Species:
 	def childCount(self):
 		return randint(self.childLower, self.childUpper)
 
-def generateSpecies():
+def generate_species():
 	data = load(open("../input/species.json"))
 	outputDict = dict()
 

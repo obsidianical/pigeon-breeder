@@ -15,11 +15,11 @@ def save(game):
 		}
 	}
 	for pigeonUID in game.allPigeons:
-		savefile["pigeon data"][pigeonUID] = convertPigeonSave(game.allPigeons[pigeonUID])
+		savefile["pigeon data"][pigeonUID] = convert_pigeon_save(game.allPigeons[pigeonUID])
 
 	dump(savefile, open("../saves/" + game.name.rstrip() + ".json", "w"), indent=2)
 
-def convertPigeonSave(pigeon):
+def convert_pigeon_save(pigeon):
 	return {
 		"uid":pigeon.uid,
 		"name":pigeon.name,
@@ -34,7 +34,7 @@ def convertPigeonSave(pigeon):
 		"children":list(pigeon.children.keys())
 	}
 
-def loadSave(gameName):
+def load_save(gameName):
 	savefile = load(open("../saves/" + gameName + ".json", "r"))
 
 	game = dycr.daycare(savefile["care data"]["name"], "../input/pigeonNames.json", "../input/help.txt")
@@ -42,7 +42,7 @@ def loadSave(gameName):
 	game.month = savefile["care data"]["month"]
 
 	for pigeonKey in savefile["care data"]["allPigeons"]:
-		game.allPigeons[pigeonKey] = convertPigeonLoad(savefile["pigeon data"][pigeonKey])
+		game.allPigeons[pigeonKey] = convert_pigeon_load(savefile["pigeon data"][pigeonKey])
 
 	for pigeonKey in savefile["care data"]["livingPigeons"]:
 		game.pigeons[pigeonKey] = game.allPigeons[pigeonKey]
@@ -58,7 +58,7 @@ def loadSave(gameName):
 
 	return game
 
-def convertPigeonLoad(pigeonData):
+def convert_pigeon_load(pigeonData):
 	loadedPigeon = Creature(pigeonData["uid"], pigeonData["name"], pigeonData["isFemale"], pigeonData["parents"], pigeonData["genes"])
 
 	loadedPigeon.age = pigeonData["age"]
